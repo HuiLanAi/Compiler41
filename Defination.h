@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #define INT 1
 #define LONG_INT 2
