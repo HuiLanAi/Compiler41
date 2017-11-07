@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #define INT 1
 #define LONG_INT 2
 #define FLOAT 3
 #define DOUBLE 4
 #define VOID 5
+#define CHAR 31
 /* 类型 */
 
 #define ADD 6
@@ -26,6 +27,7 @@
 #define SYNX 18
 #define NUMBER 19
 #define USE_FUNCTION 20
+#define CHAR_CONST 34//字符型常量
 /* 变量名 常数 函数调用 */
 
 #define EQUAL 21
@@ -34,6 +36,8 @@
 #define RIGHT 24
 #define LEFT_BRACE 25
 #define RIGHT_BRACE 26
+#define SINGLE_QOUTE 32//单引号
+#define DOUBLE_QOUTE 33//双引号
 /* 其他符号 */
 
 #define IF 27
