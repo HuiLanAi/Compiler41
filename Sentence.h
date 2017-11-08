@@ -169,7 +169,7 @@ int Sentence:: anaPart()
     for (i = 0; i < sentencePart.size(); i++)
     {
 
-        //判断关键字,运算符
+        //判断关键字和运算符
         if (sentencePart[i] == "int")
             partType.push_back(INT);
         else if (sentencePart[i] == "long")
