@@ -46,6 +46,7 @@ public:
     }
 
     void partition();
+    void showThisLine();
 
     int anaPart()
     {
@@ -125,6 +126,11 @@ void Sentence:: partition()
                 s = "";
             }
         }
+}
+
+void Sentence:: showThisLine()
+{
+    cout << thisLine << endl;
 }
 
 

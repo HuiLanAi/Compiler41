@@ -9,8 +9,10 @@ using namespace std;
 int main()
 {
     string filename, fileContent;
-	readFile(&filename, &fileContent);
-    cout << fileContent << endl;
-	
-	system("pause");
+    readFile(&filename, &fileContent);
+    vector<Sentence> originFile;//主Sentence数组 
+    partLine(&originFile, filename, fileContent);
+
+    system("pause");
+    return 0;
 }
