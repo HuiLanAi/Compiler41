@@ -47,6 +47,7 @@ public:
 
     void partition();
     void showThisLine();
+    void showSentencePart();
 
     int anaPart()
     {
@@ -127,8 +128,7 @@ public:
 void Sentence:: partition()
 {       
        int i = 0, j = 0;//2个指针
-        thisLine += '\0';
-        while (thisLine[i] != '\n')
+       while (i <= thisLine.size())
         {
             cout << "算符" << isLogic(thisLine[j]) << endl;
             string s = "";
@@ -219,8 +219,18 @@ void Sentence:: partition()
                 s = "";
             }
         }
-    
+        // System("clear");
 }
+
+void Sentence:: showSentencePart()
+{
+    for(int i = 0; i < sentencePart.size(); i++)
+	{
+		cout << sentencePart.at(i) << endl;
+	}
+}
+
+
 
 void Sentence:: showThisLine()
 {
