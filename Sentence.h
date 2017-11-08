@@ -51,68 +51,72 @@ public:
     int anaPart()
     {
         int i;
-        for(i=0;i<sentencePart.size();i++)
+        for (i = 0; i < sentencePart.size(); i++)
         {
     
-        //判断关键字,运算符
-            if(sentencePart[i]=="int")
-                 sentencePart.push_back(INT);
-            else if(sentencePart[i]=="long")
-                 sentencePart.push_back(LONG_INT);
-            else if(sentencePart[i]=="float")
-                 sentencePart.push_back(FLOAT);
-            else if(sentencePart[i]=="double")
-                 sentencePart.push_back(DOUBLE);
-            else if(sentencePart[i]=="void")
-                 sentencePart.push_back(VOID);
-            else if(sentencePart[i]=="+")
-                 sentencePart.push_back(ADD);
-            else if(sentencePart[i]=="-")
-                 sentencePart.push_back(MINUS);
-            else if(sentencePart[i]=="*")
-                 sentencePart.push_back(MULT);
-            else if(sentencePart[i]=="/")
-                sentencePart.push_back(DIV);
-            else if(sentencePart[i]=="&")
-                 sentencePart.push_back(ADD);
-            else if(sentencePart[i]=="|")
-                 sentencePart.push_back(OR);
-            else if(sentencePart[i]=="!")
-                 sentencePart.push_back(NOT);
-            else if(sentencePart[i]=="<")
-                 sentencePart.push_back(LESS);
-            else if(sentencePart[i]==">")
-                 sentencePart.push_back(MORE);
-            else if(sentencePart[i]=="<=")
-                 sentencePart.push_back(LESS_EQU);
-            else if(sentencePart[i]==">=")
-                 sentencePart.push_back(MORE_EQU);
-            else if(sentencePart[i]=="==")
-                 sentencePart.push_back(DOUBLE_EQU);
-            else if(sentencePart[i]=="=")
-                 sentencePart.push_back(EQUAL);
-            else if(sentencePart[i]==",")
-                 sentencePart.push_back(LINGER);
-            else if(sentencePart[i]=="(")
-                 sentencePart.push_back(LEFT);
-            else if(sentencePart[i]==")")
-                 sentencePart.push_back(RIGHT);
-            else if(sentencePart[i]=="{")
-                 sentencePart.push_back(LEFT_BRACE);
-            else if(sentencePart[i]=="}")
-                 sentencePart.push_back(RIGHT_BRACE);
-            else if(sentencePart[i]=="if")
-                 sentencePart.push_back(IF);
-            else if(sentencePart[i]=="else")
-                 sentencePart.push_back(ELSE);
-            else if(sentencePart[i]=="while")
-                 sentencePart.push_back(WHILE);
-            else if(sentencePart[i]=="return")
-                 sentencePart.push_back(RETURN);
-            else if(sentencePart[i]=="'")
-                 sentencePart.push_back(SINGLE_QOUTE);
-            else if(sentencePart[i]=="\"")
-                 sentencePart.push_back(DOUBLE_QOUTE);
+            //判断关键字,运算符
+            if (sentencePart[i] == "int")
+                partType.push_back(INT);
+            else if (sentencePart[i] == "long")
+                partType.push_back(LONG_INT);
+            else if (sentencePart[i] == "float")
+                partType.push_back(FLOAT);
+            else if (sentencePart[i] == "double")
+                partType.push_back(DOUBLE);
+            else if (sentencePart[i] == "void")
+                partType.push_back(VOID);
+            else if (sentencePart[i] == "char")
+                partType.push_back(CHAR);
+            else if (sentencePart[i] == "+")
+                partType.push_back(ADD);
+            else if (sentencePart[i] == "-")
+                partType.push_back(MINUS);
+            else if (sentencePart[i] == "*")
+                partType.push_back(MULT);
+            else if (sentencePart[i] == "/")
+                partType.push_back(DIV);
+            else if (sentencePart[i] == "&")
+                partType.push_back(AND);
+            else if (sentencePart[i] == "|")
+                partType.push_back(OR);
+            else if (sentencePart[i] == "!")
+                partType.push_back(NOT);
+            else if (sentencePart[i] == "<")
+                partType.push_back(LESS);
+            else if (sentencePart[i] == ">")
+                partType.push_back(MORE);
+            else if (sentencePart[i] == "<=")
+                partType.push_back(LESS_EQU);
+            else if (sentencePart[i] == ">=")
+                partType.push_back(MORE_EQU);
+            else if (sentencePart[i] == "==")
+                partType.push_back(DOUBLE_EQU);
+            else if (sentencePart[i] == "=")
+                partType.push_back(EQUAL);
+            else if (sentencePart[i] == ",")
+                partType.push_back(LINGER);
+            else if (sentencePart[i] == "(")
+                partType.push_back(LEFT);
+            else if (sentencePart[i] == ")")
+                partType.push_back(RIGHT);
+            else if (sentencePart[i] == "{")
+                partType.push_back(LEFT_BRACE);
+            else if (sentencePart[i] == "}")
+                partType.push_back(RIGHT_BRACE);
+            else if (sentencePart[i] == "if")
+                partType.push_back(IF);
+            else if (sentencePart[i] == "else")
+                partType.push_back(ELSE);
+            else if (sentencePart[i] == "while")
+                partType.push_back(WHILE);
+            else if (sentencePart[i] == "return")
+                partType.push_back(RETURN);
+            else if (sentencePart[i] == "\'")
+                partType.push_back(SINGLE_QOUTE);
+            else if (sentencePart[i] == "\"")
+                partType.push_back(DOUBLE_QOUTE);
+        }
+        return 0;
         /* 如果产生词法错误则在此函数中报错 */
         /* 东哥写的 */
     }
