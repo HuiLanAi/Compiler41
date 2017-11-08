@@ -8,7 +8,9 @@
 #include "string"
 using namespace std;
 
-#include "Defination.h"
+#include "Defination.h" 
+
+
 //partition的所用变量
     bool isBracket(char a);//判断是否是括号
     int  isLogic(char a);//   0是（）{}   1是-  2是算符  3不是算符
@@ -43,11 +45,11 @@ public:
         fileName = f;
     }
 
-    void partition();//分割句子里的各个成分并填入sentencePart
-    void showThisLine();//输出thisLine
-    int anaPart();//词法分析主函数
-    void showSentencePart();//输出sentencePart
-
+    void partition();
+    void showThisLine();
+    void showSentencePart();
+    int anaPart();
+    
 };
 
 void Sentence:: partition()
@@ -59,27 +61,32 @@ void Sentence:: partition()
         {
             string s = "";
             //处理空格
+            
             while (thisLine[i] == ' ')
             {
                 i++;
                 j++;
             }
-            //数字类型  开头就是数字
-            if (isNumber(thisLine[j]) == 2)
+            cout<<"i"<<i<<endl;
+            //数字类型: 开头就是数字  科学记数法：a=12e-12 开头是-  前面没有
+            if (isNumber(thisLine[j]) == 2 )
             {
-                if ((isNumber(thisLine[j]) == 1 && isLogic(thisLine[j - 1]) == 2))
+                //开头是数字  中间有  e-|e 数字                            数字                             小数点                     e                         e-
+                while (thisLine[j] != '\n'&& thisLine[j] != ' ' && ((isNumber(thisLine[j]) == 2) || thisLine[j] == '.' || (thisLine[j]=='e') || (thisLine[j]=='e'&&thisLine[j+1]=='-')))//之后是数字  或者小数点
                 {
-                    s += thisLine[j++];//如果是负数  就先将-号压入
-                }
-                while (thisLine[j] != '\n'&& thisLine[j] != ' ' && ((isNumber(thisLine[j]) == 2) || thisLine[j] == '.'))//之后是数字  或者小数点
-                {
-                    s += thisLine[j++];
+                    //检测到e-就一起压入
+                    if(thisLine[j]=='e'&&thisLine[j+1]=='-')
+                         { s += thisLine[j++];
+                          s += thisLine[j++];}
+                          else
+                          {
+                            s += thisLine[j++];
+                          }
                 }
                 sentencePart.push_back(s);
                 i = j;
                 s = "";
             }
-    
             //变量  关键字
             else if (isLetter(thisLine[j]))
             {
@@ -92,32 +99,55 @@ void Sentence:: partition()
                 s = "";
             }
     
-            //算符                                                    减号                                 括号
+            //       算符                                                    减号                                 括号
             else if (isLogic(thisLine[j]) == 2 || isLogic(thisLine[j]) == 1 || isLogic(thisLine[j]) == 0)
             {
-                //减号
-                if (isLogic(thisLine[j] == 1))
-                    s = +thisLine[j++];
-    
+                //减号  前面是数字
+                if ( isLogic(thisLine[j]) == 1 && ( isNumber(thisLine[j-1])==2 )    )
+                    {
+                        s = +thisLine[j++];
+                    }
+                 //减号前面是算数符号
+                 else if(   isLogic(thisLine[j]) == 1 &&  isLogic(thisLine[j-1]==2 ))
+                 {
+                        //处理负数    - [0-9] e- . e                                               
+                        while (thisLine[j] != '\n'&& thisLine[j] != ' ' && ( isLogic(thisLine[j]) == 1   ||(isNumber(thisLine[j]) == 2) || thisLine[j] == '.' || (thisLine[j]=='e') || (thisLine[j]=='e'&&thisLine[j+1]=='-')))//之后是数字  或者小数点
+                        {
+                            //检测到e-就一起压入
+                            if(thisLine[j]=='e'&&thisLine[j+1]=='-')
+                                 { s += thisLine[j++];
+                                  s += thisLine[j++];}
+                                  else
+                                  {
+                                    s += thisLine[j++];
+                                  }
+                        }
+                        cout<<"负数"<<s<<endl;
+                 }
                 //是括号
-                else	if (isLogic(thisLine[j]) == 0)
+                else if (isLogic(thisLine[j]) == 0)
                 {
                     s = +thisLine[j++];
+                    cout<<"括号"<<s<<endl;
                     
                 }
     
                 //普通算符
                 else {
-                    while (thisLine[j] != '\n' && thisLine[j] != ' ' && (isLogic(thisLine[j]) == 2))
+                    cout<<"普通算符"<< isLogic(thisLine[j])<<endl;
+                    while (thisLine[j] != '\n' && thisLine[j] != ' ' &&  isLogic(thisLine[j]) == 2  )
                     {
                         s += thisLine[j++];
                     }
+                    cout<<"普通算符"<<s<<endl;
                 }
+    
                 sentencePart.push_back(s);//核心
                 i = j;
                 s = "";
             }
         }
+    
 }
 
 void Sentence:: showThisLine()
@@ -131,6 +161,79 @@ void Sentence:: showSentencePart()
     {
         cout << sentencePart.at(i) << endl;
     }
+}
+
+int Sentence:: anaPart()
+{
+    int i;
+    for (i = 0; i < sentencePart.size(); i++)
+    {
+
+        //判断关键字,运算符
+        if (sentencePart[i] == "int")
+            partType.push_back(INT);
+        else if (sentencePart[i] == "long")
+            partType.push_back(LONG_INT);
+        else if (sentencePart[i] == "float")
+            partType.push_back(FLOAT);
+        else if (sentencePart[i] == "double")
+            partType.push_back(DOUBLE);
+        else if (sentencePart[i] == "void")
+            partType.push_back(VOID);
+        else if (sentencePart[i] == "char")
+            partType.push_back(CHAR);
+        else if (sentencePart[i] == "+")
+            partType.push_back(ADD);
+        else if (sentencePart[i] == "-")
+            partType.push_back(MINUS);
+        else if (sentencePart[i] == "*")
+            partType.push_back(MULT);
+        else if (sentencePart[i] == "/")
+            partType.push_back(DIV);
+        else if (sentencePart[i] == "&")
+            partType.push_back(AND);
+        else if (sentencePart[i] == "|")
+            partType.push_back(OR);
+        else if (sentencePart[i] == "!")
+            partType.push_back(NOT);
+        else if (sentencePart[i] == "<")
+            partType.push_back(LESS);
+        else if (sentencePart[i] == ">")
+            partType.push_back(MORE);
+        else if (sentencePart[i] == "<=")
+            partType.push_back(LESS_EQU);
+        else if (sentencePart[i] == ">=")
+            partType.push_back(MORE_EQU);
+        else if (sentencePart[i] == "==")
+            partType.push_back(DOUBLE_EQU);
+        else if (sentencePart[i] == "=")
+            partType.push_back(EQUAL);
+        else if (sentencePart[i] == ",")
+            partType.push_back(LINGER);
+        else if (sentencePart[i] == "(")
+            partType.push_back(LEFT);
+        else if (sentencePart[i] == ")")
+            partType.push_back(RIGHT);
+        else if (sentencePart[i] == "{")
+            partType.push_back(LEFT_BRACE);
+        else if (sentencePart[i] == "}")
+            partType.push_back(RIGHT_BRACE);
+        else if (sentencePart[i] == "if")
+            partType.push_back(IF);
+        else if (sentencePart[i] == "else")
+            partType.push_back(ELSE);
+        else if (sentencePart[i] == "while")
+            partType.push_back(WHILE);
+        else if (sentencePart[i] == "return")
+            partType.push_back(RETURN);
+        else if (sentencePart[i] == "\'")
+            partType.push_back(SINGLE_QOUTE);
+        else if (sentencePart[i] == "\"")
+            partType.push_back(DOUBLE_QOUTE);
+    }
+    return 0;
+    /* 如果产生词法错误则在此函数中报错 */
+    /* 东哥写的 */   
 }
 
 
@@ -149,74 +252,6 @@ void mergeString(vector<string>* str1, vector<int>* type, vector<Sentence> array
     }
 }
 
-// int Sentence::anaPart()
-// {
-//     int i;
-//     for(i=0;i<sentencePart.size();i++)
-//     {
-
-//     //判断关键字,运算符
-//         if(sentencePart[i]=="int")
-//              sentencePart.push_back(INT);
-//         else if(sentencePart[i]=="long")
-//              sentencePart.push_back(LONG_INT);
-//         else if(sentencePart[i]=="float")
-//              sentencePart.push_back(FLOAT);
-//         else if(sentencePart[i]=="double")
-//              sentencePart.push_back(DOUBLE);
-//         else if(sentencePart[i]=="void")
-//              sentencePart.push_back(VOID);
-//         else if(sentencePart[i]=="+")
-//              sentencePart.push_back(ADD);
-//         else if(sentencePart[i]=="-")
-//              sentencePart.push_back(MINUS);
-//         else if(sentencePart[i]=="*")
-//              sentencePart.push_back(MULT);
-//         else if(sentencePart[i]=="/")
-//             sentencePart.push_back(DIV);
-//         else if(sentencePart[i]=="&")
-//              sentencePart.push_back(ADD);
-//         else if(sentencePart[i]=="|")
-//              sentencePart.push_back(OR);
-//         else if(sentencePart[i]=="!")
-//              sentencePart.push_back(NOT);
-//         else if(sentencePart[i]=="<")
-//              sentencePart.push_back(LESS);
-//         else if(sentencePart[i]==">")
-//              sentencePart.push_back(MORE);
-//         else if(sentencePart[i]=="<=")
-//              sentencePart.push_back(LESS_EQU);
-//         else if(sentencePart[i]==">=")
-//              sentencePart.push_back(MORE_EQU);
-//         else if(sentencePart[i]=="==")
-//              sentencePart.push_back(DOUBLE_EQU);
-//         else if(sentencePart[i]=="=")
-//              sentencePart.push_back(EQUAL);
-//         else if(sentencePart[i]==",")
-//              sentencePart.push_back(LINGER);
-//         else if(sentencePart[i]=="(")
-//              sentencePart.push_back(LEFT);
-//         else if(sentencePart[i]==")")
-//              sentencePart.push_back(RIGHT);
-//         else if(sentencePart[i]=="{")
-//              sentencePart.push_back(LEFT_BRACE);
-//         else if(sentencePart[i]=="}")
-//              sentencePart.push_back(RIGHT_BRACE);
-//         else if(sentencePart[i]=="if")
-//              sentencePart.push_back(IF);
-//         else if(sentencePart[i]=="else")
-//              sentencePart.push_back(ELSE);
-//         else if(sentencePart[i]=="while")
-//              sentencePart.push_back(WHILE);
-//         else if(sentencePart[i]=="return")
-//              sentencePart.push_back(RETURN);
-//         else if(sentencePart[i]=="'")
-//              sentencePart.push_back(SINGLE_QOUTE);
-//         else if(sentencePart[i]=="\"")
-//              sentencePart.push_back(DOUBLE_QOUTE);
-//     /* 如果产生词法错误则在此函数中报错 */
-//     /* 东哥写的 */
-// }
 
 //判断是否是括号
 bool isBracket(char a)
