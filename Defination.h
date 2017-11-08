@@ -34,13 +34,14 @@
 /* 变量名 常数 函数调用 */
 
 #define EQUAL 21
-#define LINGER 22
+#define LINGER 22//逗号
 #define LEFT 23
 #define RIGHT 24
 #define LEFT_BRACE 25
 #define RIGHT_BRACE 26
 #define SINGLE_QOUTE 32//单引号
 #define DOUBLE_QOUTE 33//双引号
+#define SINGLE_SYB 35//单字符标志，比如'$'
 /* 其他符号 */
 
 #define IF 27
