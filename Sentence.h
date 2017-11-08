@@ -222,12 +222,6 @@ void Sentence:: partition()
     
 }
 
-void Sentence:: showThisLine()
-{
-    cout << thisLine << endl;
-}
-
-
 void mergeString(vector<string>* str1, vector<int>* type, vector<Sentence> array)
 /*  将文本中所有行的词法单元和种类都合并到一起 */
 {
