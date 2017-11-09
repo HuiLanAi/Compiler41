@@ -55,9 +55,11 @@ public:
 
     int anaPartFirstTime()
     {
-        int i;
+        int i,k,state;
         for (i = 0; i < sentencePart.size(); i++)
         {
+            state=1;
+            string str=sentencePart[i];
             if (sentencePart[i] == "int")
                 partType.push_back(INT);
             else if (sentencePart[i] == "long")
@@ -157,11 +159,32 @@ public:
             }
             else if (sentencePart[i] == "\"")
                 partType.push_back(DOUBLE_QOUTE);
-            //判断关键字,运算符
             else
-            {
-                partType.push_back(ERROR);
+            {     //识别用户定义标识符
+                    for (k = 0; k < str.length(); k++)
+                    {
+                        if ((!isLetter)&& isNumber(str[k]) == 3)
+                            break;
+                        if (state == 1 && (isLetter || isNumber(str[k]) == 1))
+                            state = 2;
+                        if (state == 1 && isNumber(str[k]) ==2)
+                            break;
+                        if (state == 2 && (isLetter|| isNumber(str[k]) == 1 || isNumber(str[k]) == 2))
+                            state = 2;
+                    }
+        
+                    if (k == str.length())
+                    {
+                        partType.push_back(SYNX);
+                    }
+                    //判断关键字,运算符
+                     else
+                     {
+                         partType.push_back(ERROR);
+                     }
             }
+            
+            
         }
         return 0;
         /* 如果产生词法错误则在此函数中报错 */
