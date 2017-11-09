@@ -16,6 +16,8 @@ using namespace std;
     int isNumber(char a);
     //判断字母  下划线
     bool isLetter(char a);
+    //开头是否是数字
+	int isPrefixNumber(char head);
     
    //前缀符                                                                              11               15      
 string prefix[] = { "-",  "+","*","/","=",">","<","&","|", "," ,"!" ,   "(" ,")" ,"{","}" ,"'","#","@","$","%","\\" , "?" , ":","_" };//11后是括号
@@ -94,10 +96,31 @@ public:
                 partType.push_back(EQUAL);
             else if (sentencePart[i] == ",")
                 partType.push_back(LINGER);
-            else if (sentencePart[i] == "(")
-                partType.push_back(LEFT);
-            else if (sentencePart[i] == ")")
-                partType.push_back(RIGHT);
+            //如果是单独的括号                            隔开后2个元素是非右括号算符      
+			else if (sentencePart[i] == "(" &&  isLogic(sentencePart[i+2][0])!=3 &&  sentencePart[i+2]!=")" )
+			{
+				partType.push_back(LEFT);
+            }
+            //如果是一起的算到数字里面                     隔开后2个元素是括号算符      
+			else if (sentencePart[i] == "(" &&   isLogic(sentencePart[i+2][0])==0 )
+			{
+                //判断括号的内容
+                if(isNumber(sentencePart[i+1][0]))//开头是数字
+                    partType.push_back(NUMBER);
+                else//是变量
+                partType.push_back(SYNX);
+
+                i=i+2;
+            }
+            //单独的括号         前2个的元素不是括号
+            else if (sentencePart[i] == ")"  &&  sentencePart[i-2]!= "("  )
+               {
+                    partType.push_back(RIGHT);
+               }
+            else if (sentencePart[i] == ")"  &&  sentencePart[i-2]== "("  )
+               {
+                  ;
+               }
             else if (sentencePart[i] == "{")
                 partType.push_back(LEFT_BRACE);
             else if (sentencePart[i] == "}")
@@ -318,4 +341,11 @@ bool isLetter(char a)
 		return(true);
 	else
 		return(false);
+}
+//判断开头是数字
+int isPrefixNumber(char head)
+{
+   if(head<='9'&&head>='0')
+   return(1);
+   else return(0);
 }
