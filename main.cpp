@@ -9,13 +9,13 @@ using namespace std;
 int main()
 {
     string filename, fileContent;
-    readFile(&filename, &fileContent);
+    readFile(&filename, &fileContent);//读取文件
     vector<Sentence> originFile;//主Sentence数组 
     partLine(&originFile, filename, fileContent);//对文本进行分行
     for(int i = 0; i < originFile.size(); i++)
     {
         originFile.at(i).partition();
-		//system("clear");
+        originFile.at(i).anaPartFirstTime();
     }
     
 	for (int i = 0; i < originFile.size(); i++)

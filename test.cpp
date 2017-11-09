@@ -1,6 +1,7 @@
+'a'
 char abc = 'f'
 
-float ba = 12e-12
+float ba = (-a)*(12+c)
 
 float c = -12.34
 
