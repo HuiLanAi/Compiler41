@@ -98,13 +98,14 @@ public:
                 partType.push_back(EQUAL);
             else if (sentencePart[i] == ",")
                 partType.push_back(LINGER);
+            
             //如果是单独的括号                            隔开后2个元素是非右括号算符      
-			else if (sentencePart[i] == "(" &&  isLogic(sentencePart[i+2][0])!=3 &&  sentencePart[i+2]!=")" )
+			else if (sentencePart[i] == "(" &&   sentencePart[i+2]!=")" )
 			{
 				partType.push_back(LEFT);
             }
             //如果是一起的算到数字里面                     隔开后2个元素是括号算符      
-			else if (sentencePart[i] == "(" &&   isLogic(sentencePart[i+2][0])==0 )
+			else if (sentencePart[i] == "(" &&   sentencePart[i+2]==")" )
 			{
                 //判断括号的内容
                 if(isNumber(sentencePart[i+1][0]))//开头是数字
