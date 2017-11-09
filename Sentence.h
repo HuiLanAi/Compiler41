@@ -50,12 +50,16 @@ public:
     void partition();//分隔一行句子中的所有词法成分
     void showThisLine();//输出thisLine
     void showSentencePart();//输出sentencePart
+    void showPartType();//输出token类型
+    
 
     int anaPartFirstTime()
     {
-        int i;
+        int i,k,state;
         for (i = 0; i < sentencePart.size(); i++)
         {
+            state=1;
+            string str=sentencePart[i];
             if (sentencePart[i] == "int")
                 partType.push_back(INT);
             else if (sentencePart[i] == "long")
@@ -135,12 +139,52 @@ public:
             else if (sentencePart[i] == "return")
                 partType.push_back(RETURN);
             else if (sentencePart[i] == "\'")
+            //判断字符常量类型
+            {
                 partType.push_back(SINGLE_QOUTE);
+                if (sentencePart[i + 1].size() == 1 && sentencePart[i + 2] == "\'")
+                {
+                    sentencePart[i].append(sentencePart[i + 1]);
+                    sentencePart[i].append(sentencePart[i + 2]); //融合
+                    cout << sentencePart[i] << " hahhah" << endl;
+                    sentencePart.erase(sentencePart.begin() + i);
+                    sentencePart.erase(sentencePart.begin() + i + 1); //抹除后面两个单元
+                    partType.pop_back();
+                    partType.push_back(CHAR_CONST);
+                }
+                else
+                {
+                    return ERROR;
+                }
+            }
             else if (sentencePart[i] == "\"")
                 partType.push_back(DOUBLE_QOUTE);
-            //判断关键字,运算符
-           // else if (sentencePart[i].at(0) == '-' || sentencePart[i].at(0))
-            //判断数字
+            else
+            {     //识别用户定义标识符
+                    for (k = 0; k < str.length(); k++)
+                    {
+                        if ((!isLetter)&& isNumber(str[k]) == 3)
+                            break;
+                        if (state == 1 && (isLetter || isNumber(str[k]) == 1))
+                            state = 2;
+                        if (state == 1 && isNumber(str[k]) ==2)
+                            break;
+                        if (state == 2 && (isLetter|| isNumber(str[k]) == 1 || isNumber(str[k]) == 2))
+                            state = 2;
+                    }
+        
+                    if (k == str.length())
+                    {
+                        partType.push_back(SYNX);
+                    }
+                    //判断关键字,运算符
+                     else
+                     {
+                         partType.push_back(ERROR);
+                     }
+            }
+            
+            
         }
         return 0;
         /* 如果产生词法错误则在此函数中报错 */
@@ -149,6 +193,14 @@ public:
 
 
 };
+
+void Sentence:: showPartType()
+{
+    for(int i = 0; i < partType.size(); i ++)
+    {
+        cout << partType.at(i) << " ";
+    }
+}
 
 void Sentence:: partition()
 {       
