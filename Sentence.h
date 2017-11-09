@@ -6,6 +6,7 @@
 #include "iostream"
 #include "vector"
 #include "string"
+#include"regex"
 using namespace std;
 
 #include "Defination.h"    
@@ -100,6 +101,13 @@ public:
                 partType.push_back(EQUAL);
             else if (sentencePart[i] == ",")
                 partType.push_back(LINGER);
+			else if ((sentencePart[i][0] >= '0' &&sentencePart[i][0] <= '9' )|| sentencePart[i][0] == '.' || sentencePart[i][0] == '-')
+			{
+				partType.push_back(NUMBER);
+				regex REGEX("^-?[1-9]\\d+(\.\\d+)?(e-?\\d+)?$");
+				if (!regex_match(sentencePart[i], REGEX))
+					return(ERROR);
+			}
             
             //如果是单独的括号                            隔开后2个元素是非右括号算符      
 			else if (sentencePart[i] == "(" &&   sentencePart[i+2]!=")" )
@@ -146,8 +154,7 @@ public:
                 {
                     sentencePart[i].append(sentencePart[i + 1]);
                     sentencePart[i].append(sentencePart[i + 2]); //融合
-                    cout << sentencePart[i] << " hahhah" << endl;
-                    sentencePart.erase(sentencePart.begin() + i);
+                    sentencePart.erase(sentencePart.begin() + i + 1);
                     sentencePart.erase(sentencePart.begin() + i + 1); //抹除后面两个单元
                     partType.pop_back();
                     partType.push_back(CHAR_CONST);
@@ -165,11 +172,11 @@ public:
                     {
                         if ((!isLetter)&& isNumber(str[k]) == 3)
                             break;
-                        if (state == 1 && (isLetter || isNumber(str[k]) == 1))
+                        if (state == 1 && (isLetter || isNumber(str[k]) == 3))
                             state = 2;
                         if (state == 1 && isNumber(str[k]) ==2)
                             break;
-                        if (state == 2 && (isLetter|| isNumber(str[k]) == 1 || isNumber(str[k]) == 2))
+                        if (state == 2 && (isLetter|| isNumber(str[k]) == 2))
                             state = 2;
                     }
         
@@ -183,10 +190,9 @@ public:
                          partType.push_back(ERROR);
                      }
             }
-            
-            
+
         }
-        return 0;
+        return 1;
         /* 如果产生词法错误则在此函数中报错 */
         /* 东哥写的 */
     }
