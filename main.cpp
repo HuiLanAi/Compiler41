@@ -15,9 +15,9 @@ int main()
     for(int i = 0; i < originFile.size(); i++)
     {
         originFile.at(i).partition();
-		system("clear");
+		//system("clear");
     }
-
+    
 	for (int i = 0; i < originFile.size(); i++)
 	{
 		originFile.at(i).showSentencePart();

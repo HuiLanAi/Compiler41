@@ -32,7 +32,7 @@ void partLine(vector<Sentence>* file, string filename, string fileContent)
 //fileContent是文本原始内容
 {
     int front = 0, back = 0, line = 1;
-    while(fileContent.at(back) != EOF)
+    while(fileContent.size() > back)
     {
         if(fileContent.at(back) == '\n')
         {
@@ -43,12 +43,13 @@ void partLine(vector<Sentence>* file, string filename, string fileContent)
                 // cout << temp[i];
             }
             Sentence tempS(line, filename, temp);
+            //cout << temp << endl;
             (*file).push_back(tempS);
             line ++;
             back ++;
-			if(back == fileContent.size())
+			if(back == fileContent.size() - 1 || back == fileContent.size())
 			{
-				break;
+				return;
             }
             /* 溢出边界检查 */
             while(fileContent.at(back) == '\n')
