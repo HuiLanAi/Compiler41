@@ -146,8 +146,7 @@ public:
                 {
                     sentencePart[i].append(sentencePart[i + 1]);
                     sentencePart[i].append(sentencePart[i + 2]); //融合
-                    cout << sentencePart[i] << " hahhah" << endl;
-                    sentencePart.erase(sentencePart.begin() + i);
+                    sentencePart.erase(sentencePart.begin() + i + 1);
                     sentencePart.erase(sentencePart.begin() + i + 1); //抹除后面两个单元
                     partType.pop_back();
                     partType.push_back(CHAR_CONST);
@@ -183,8 +182,7 @@ public:
                          partType.push_back(ERROR);
                      }
             }
-            
-            
+
         }
         return 0;
         /* 如果产生词法错误则在此函数中报错 */
