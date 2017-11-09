@@ -45,16 +45,15 @@ public:
         fileName = f;
     }
 
-    void partition();
-    void showThisLine();
+    void partition();//分隔一行句子中的所有词法成分
+    void showThisLine();//输出thisLine
+    void showSentencePart();//输出sentencePart
 
-    int anaPart()
+    int anaPartFirstTime()
     {
         int i;
         for (i = 0; i < sentencePart.size(); i++)
         {
-    
-            //判断关键字,运算符
             if (sentencePart[i] == "int")
                 partType.push_back(INT);
             else if (sentencePart[i] == "long")
@@ -115,6 +114,9 @@ public:
                 partType.push_back(SINGLE_QOUTE);
             else if (sentencePart[i] == "\"")
                 partType.push_back(DOUBLE_QOUTE);
+            //判断关键字,运算符
+           // else if (sentencePart[i].at(0) == '-' || sentencePart[i].at(0))
+            //判断数字
         }
         return 0;
         /* 如果产生词法错误则在此函数中报错 */
@@ -127,10 +129,8 @@ public:
 void Sentence:: partition()
 {       
        int i = 0, j = 0;//2个指针
-        thisLine += '\0';
-        while (thisLine[i] != '\n')
+       while (i < thisLine.size())
         {
-            cout << "算符" << isLogic(thisLine[j]) << endl;
             string s = "";
             //处理空格
             
@@ -139,7 +139,6 @@ void Sentence:: partition()
                 i++;
                 j++;
             }
-            cout<<"i"<<i<<endl;
             //数字类型: 开头就是数字  科学记数法：a=12e-12 开头是-  前面没有
             if (isNumber(thisLine[j]) == 2 )
             {
@@ -194,24 +193,25 @@ void Sentence:: partition()
                                     s += thisLine[j++];
                                   }
                         }
-                        cout<<"负数"<<s<<endl;
                  }
                 //是括号
                 else if (isLogic(thisLine[j]) == 0)
                 {
                     s = +thisLine[j++];
-                    cout<<"括号"<<s<<endl;
                     
                 }
     
                 //普通算符
                 else {
-                    cout<<"普通算符"<< isLogic(thisLine[j])<<endl;
-                    while (thisLine[j] != '\n' && thisLine[j] != ' ' &&  isLogic(thisLine[j]) == 2  )
+                    if (thisLine[j] != '\n' && thisLine[j] != ' ' &&  isLogic(thisLine[j]) == 2 && thisLine[j+1]!='=' && thisLine[j+1]!='|'&& thisLine[j+1]!='&' )
                     {
                         s += thisLine[j++];
                     }
-                    cout<<"普通算符"<<s<<endl;
+                    else if (thisLine[j] != '\n' && thisLine[j] != ' ' &&  isLogic(thisLine[j]) == 2 && ( thisLine[j+1]=='=' || thisLine[j+1]=='&'|| thisLine[j+1]=='|') )
+                    {
+                        s += thisLine[j++];
+                        s += thisLine[j++];
+                    }
                 }
     
                 sentencePart.push_back(s);//核心
@@ -219,8 +219,23 @@ void Sentence:: partition()
                 s = "";
             }
         }
-    
 }
+
+void Sentence:: showSentencePart()
+{
+    for(int i = 0; i < sentencePart.size(); i++)
+	{
+		cout << sentencePart.at(i) << endl;
+	}
+}
+
+
+
+void Sentence:: showThisLine()
+{
+    cout << thisLine << endl;
+}
+
 
 void mergeString(vector<string>* str1, vector<int>* type, vector<Sentence> array)
 /*  将文本中所有行的词法单元和种类都合并到一起 */
