@@ -101,6 +101,7 @@ public:
                 partType.push_back(EQUAL);
             else if (sentencePart[i] == ",")
                 partType.push_back(LINGER);
+          
 			else if ((sentencePart[i][0] >= '0' &&sentencePart[i][0] <= '9' )|| sentencePart[i][0] == '.' || sentencePart[i][0] == '-')
 			{
 				partType.push_back(NUMBER);
@@ -108,6 +109,7 @@ public:
 				if (!regex_match(sentencePart[i], REGEX))
 					return(ERROR);
 			}
+
             
             //如果是单独的括号                            隔开后2个元素是非右括号算符      
 			else if (sentencePart[i] == "(" &&   sentencePart[i+2]!=")" )
